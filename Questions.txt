@@ -104,11 +104,11 @@ Jax-RS:
 9. Difference between POST and PUT ? Ans: POST is used to create a recorces while put is used to update a resource with an Id. Put needs where clause while POST need an insert or delete statements. For more details see: http://www.java67.com/2016/09/when-to-use-put-or-post-in-restful-web-services.html
 
 10. What is idempotent and safe methods of http and REST ?
-		HTTP METOD	IDEMPOTENT	SAFE
-		GET			yes			yes
+		HTTP METOD	IDEMPOTENT		SAFE
+		GET		yes			yes
 		HEAD		yes			yes
 		OPTIONS		yes			yes
-		PUT			yes			yes
+		PUT		yes			yes
 		POST		no			yes
 		DELETE		yes			no
 		PATCH		no			no
