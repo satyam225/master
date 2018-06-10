@@ -27,7 +27,8 @@
 	8.1 : What are reduction operations in streams ?
 9. excuter framework. 
 10. Futures task object, 
-11. Fail fast and fail safe.
+11. Fail fast and fail safe ? Fail fast iterater : No other thread con moidfy a collection while iterating a collection. Upon doing so, it will through ConcurrentMoidificationException. 
+   Fail Safe : will not though any such exception on certail collections like ConcurrentHashMap or CopyOnWriteArrayList or 	  CopyOnWriteArraySet.
 12. int[] evenNumbers = new int[10];
 	Arrays.setAll(evenNumbers, i -> i * 2); //out put 0,2,4,6
 	
