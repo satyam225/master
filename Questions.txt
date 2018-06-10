@@ -1,0 +1,237 @@
+
+1. How to remove elements from a collection while iterating ?
+2. Which version of java have you worked on ?
+3. What is memory leak in String.
+4. What are the ways to achieve singleTone.
+5. List some of the patterns that you know.
+6. What is Java enum.
+5. Generics in java. (see java 8 in action book at E:\My Documents\MyData\Books)
+8. Java 8 features like lamda, streams, etc.
+    Methods of stream(): Map, flatmap, stream(), distinct(),collect(), .ifPresent(),.filter(),.findAny() etc
+	  .reduce() method of stream needs two argumenst first one is initilal value, next is the acutall operation on values.
+	    example for reduce function: int sum = numbers.stream().reduce(0, (a, b) -> a + b); where a is 0 at first step and b is the first value from the stream.
+		.reduce() with out inital value : Optional<Integer> sum = numbers.stream().reduce((a, b) -> (a + b));
+		          to return max value of a stream: Optional<Integer> max = numbers.stream().reduce(Integer::max);
+    List<String> dishNames = menu.stream()
+								 .map(Dish::getName)
+								 .collect(toList());
+	List<String> uniqueCharacters =    words.stream()
+											.map(w -> w.split(""))
+											.flatMap(Arrays::stream)
+											.distinct()
+											.collect(Collectors.toList());
+											
+		Example :input: Hellow World --> output: Helowrd
+		word.stream().anyMatch() or .someMatch() etc methods are also there.
+		Example: boolean isHealthy = menu.stream().allMatch(d -> d.getCalories() < 1000);
+	8.1 : What are reduction operations in streams ?
+9. excuter framework. 
+10. Futures task object, 
+11. Fail fast and fail safe.
+12. int[] evenNumbers = new int[10];
+	Arrays.setAll(evenNumbers, i -> i * 2); //out put 0,2,4,6
+	
+13. 	int[] ones = new int[10];
+		Arrays.fill(ones, 1);
+		Arrays.parallelPrefix(ones, (a, b) -> a + b); //out plut 1,2,3,4....10
+		
+14. parallSort : Sorts elements of an Array in parallel using natural order or using a comparator.
+15. Customer is a functional interface that has only one mehtod accept() and  is used to perform a job and return nothing.
+   Example: 
+	public class EmployeeCustomer implements Consumer<Employee> {
+
+		@Override
+		public void accept(Employee t) {
+			System.out.println(" "+t);
+		}
+	}
+16. Predicate can be used to create filters that can be used to filter on steam of collection.
+		java.util.function.Predicate<Employee> filterPredicate = e -> e.id > 1 && e.sal < 6000;
+        java.util.function.Consumer<Employee> printConsumer = e -> System.out.println(e.id + ", "+e.sal);
+        list.stream().filter(filterPredicate).forEach(printConsumer);
+		
+17. How to Convert List to Map? Ans: Collectors.tomap() can be used. It has two mandatory argumeants and two optional arguments.
+     toMap(Function keyMapper, Function valueMapper, BinaryOperator mergeFunction, Supplier mapSupplier);
+	 Note: If mergeFunction is not provided will though an excption of duplicate keys.
+	       Supplier will help in coverting the return value of tomap() ie, HashMap to any othe colleciton like LinkedHashMap.
+		   
+	Example:
+	  LinkedHashMap<Integer, String> map = list.stream()
+				.collect(Collectors.toMap(Person::getId, Person::getName, 
+						(x, y) -> x+", "+ y, LinkedHashMap::new));
+
+18. map() vs flatMap()
+	. The function you pass to map() operation returns a single value.
+	. The function you pass to flatMap() opeartion returns a Stream of value.
+	
+	Example:
+	 List evens = Arrays.asList(2, 4, 6); 
+	 List odds = Arrays.asList(3, 5, 7); 
+	 List primes = Arrays.asList(2, 3, 5, 7, 11); 
+	 List numbers = Stream.of(evens, odds, primes) 
+						  .flatMap(list -> list.stream()) 
+						  .collect(Collectors.toList()); 
+	System.out.println("flattend list: " + numbers); 
+	//Output: flattend list: [2, 4, 6, 3, 5, 7, 2, 3, 5, 7, 11]
+
+Read more: https://javarevisited.blogspot.com/2016/03/difference-between-map-and-flatmap-in-java8.html#ixzz5I1wTjNcT
+
+
+Read more: https://javarevisited.blogspot.com/2016/03/difference-between-map-and-flatmap-in-java8.html#ixzz5I1w28agT
+----------
+captcha
+
+--=========JAVA 9 ============
+
+1. HttpClient reduces coding a lot when we make http calls.
+2. httpClient.sendAsync() makes assyic call and returns CompletableFuture object, so that you can work on something else after submitting the reqeust and while waiting on the response.
+3. Smaple code can be found at https://blog.idrsolutions.com/2017/05/why-http2-client-in-java-9-is-important/
+	HttpClient httpClient = HttpClient.newHttpClient(); //Create a HttpClient
+	HttpRequest httpRequest = HttpRequest.newBuilder().uri(new URI("https://www.google.com/")).GET().build(); //Create a GET request for the given URI
+	HttpResponse<String> httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandler.asString()); //Send the request that will decode the body as a String
+	System.out.println(httpResponse.body()); 
+4. HttpResponse.BodyHandler.asFile(Path file) will write the response from HttpClinet to a file.
+
+Jax-RS:
+1. What are curd operations ?
+2. Assume that you have two sub classes of a class and you want to auto wire these subclasses in a controller how to do it ?
+3. Explain me the steps involved in defining a spring bean.
+4. How do you create a rest service in spring ?
+5. How do you test a rest service ?
+6. SOAP vs REST.
+7. What is multi valued map ?
+8. How do you build a rest services that deals with huge data ?
+9. Difference between POST and PUT ? Ans: POST is used to create a recorces while put is used to update a resource with an Id. Put needs where clause while POST need an insert or delete statements. For more details see: http://www.java67.com/2016/09/when-to-use-put-or-post-in-restful-web-services.html
+
+10. What is idempotent and safe methods of http and REST ?
+		HTTP METOD	IDEMPOTENT	SAFE
+		GET			yes			yes
+		HEAD		yes			yes
+		OPTIONS		yes			yes
+		PUT			yes			yes
+		POST		no			yes
+		DELETE		yes			no
+		PATCH		no			no
+  for more details refer : https://javarevisited.blogspot.com/2016/05/what-are-idempotent-and-safe-methods-of-HTTP-and-REST.html#more
+
+
+
+Spring MVC
+1. What are steps involved in using a property to inject into a class ?
+2. How do you secure your web application ?
+3. Filters in web applications.
+4. How do you load multiple spring configuration files in spring mvc ?
+5. Spring AOP
+6. Spring batch.
+
+
+Hibernate/NoSQL
+What
+JSON
+
+zool
+
+Version Control
+1. git hub
+2. svn
+
+Build and deploy
+Ant, mavien
+
+What is web socket url ?
+What docker container ?
+
+KOHLS Interview Question.
+·         What is materialized view and what is view?
+·         What is snapshot
+·         Difference between SOAP and REST
+·         What is Service locator Design pattern and command design pattern
+·         Spring Batch
+·         How you can improve the performance of REST
+·         What is singleton
+·         What is inner query?
+·         Different scope of Spring bean
+·         What is IOC
+·     How we can write a Stored procedure.
+
+1. How do you load properties file using spring framwork. One with annotation and one with out annotation. Which one your reommend to use and why?
+2. Explain the step that need to be done to setup a maven project. ? How maven build works ?
+3. How do you secure a web services ?
+4. How do you set your application so that it accepts request only form predfiend domains or servers?
+5. Explain me how you valiate an authorzation of a user requiest for a service. For example Admin servcies, customer or employee servies etc ?
+6. CAn you give me some examples of memory leacks and steps to be taken to fix them.
+7. How to analze your code to identify which part of the code is taking more time of execution and/or resources with an example.
+
+Kohls Interview questions==============
+
+Topics that you need to be prepping yourself
+how to secure the connection between app and db
+how to protect db credentials
+How to application to JRE / specific version of Java
+Why do we need a JVM?
+Features of Java 1.8
+What are streams?
+Role escalation - how do you ensure that logged in user does not change the roles with another role with higher privileges
+Lamda expression vs anonymous class - where do you use anonymous class?
+Asynchronous messaging framework
+Difference between JDK and JRE
+===============================================================================================================
+
+
+Self-interdiction,
+ 
+Can u explain about string
+                1.String is immutable class and it have String constant pool each and every string reference from string pool referred to string instantiated.
+Why string is immutable.
+                Not sure
+Can u explain how immutable class created?
+                Final class and with final private variables with getters and through constructor we will instantiate.
+What the spring module used for spring batch?
+                Spring core
+Which one used for implementing restful web services
+                Spring and Jercy
+Can u explain how spring how restful will be created.
+                1.careate dispatcher servlet in web.xml
+                2.bean.xml
+                                .mvc-Annotation driven tage
+                                .componenet scan to load reset services
+                3.Controller we have to write
+                Along with @RequestMapping @RequestBody we have to specify along with produces and consumers we have to specify
+                                Bean which we are trying to expose as xml has to annotated with @RootElement of jaxb
+Which java technologies you have bean worked so far?
+Java 7, and java 8
+ 
+What are the java 8 features you have been used
+                @FuncationInterfaces
+                @for Each
+                @Streams and Filters
+                Lambda expressions
+                Local Time
+ 
+Why to use Local time?
+                To Get the platform depended date format and local laze time format we have used, given example how to create
+Local time format we can create before we can use also,What is the use of local time in java?
+                Repeated the same above answer
+How to validate headers in spring rest web services.      
+                Not answered
+How to Schedule spring job
+                By using schedule task we can schedule the job
+ 
+
+
+--============ MY ASSIGNMENTS ================
+
+1. Impleement a collection of employess, and filter them based the department number and collect them to a list.
+2. Implement above to do in parallel.
+
+
+--=================CAREER-================
+
+home depo:
+sayam225@gmail.com/Wxxxx@abc
+
+
+
+
+
+
